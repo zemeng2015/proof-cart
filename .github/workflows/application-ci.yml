@@ -1,0 +1,62 @@
+name: Application checks
+
+on:
+  push:
+    branches: [main, 'codex/**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixture:
+    name: Build and verify the offline fixture shell
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PROOF_CART_MODE: fixture
+      CI: 'true'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install pinned package manager
+        run: npm install --global npm@11.11.0
+      - name: Install locked dependencies
+        run: npm ci --no-audit
+      - name: Audit the locked dependency graph
+        run: npm audit
+      - name: Generate route types and check strict TypeScript
+        run: npm run typecheck
+      - name: Lint application and tests
+        run: npm run lint
+      - name: Unit and component checks
+        run: npm test
+      - name: Build SSR worker and browser bundle
+        run: npm run build
+        env:
+          PRIVATE_STOREFRONT_API_TOKEN: PC01_SERVER_SECRET_MARKER
+          VITE_PRIVATE_TEST: PC01_VITE_SECRET_MARKER
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Verify runtime configuration and safe logs
+        run: npm run test:runtime
+      - name: Browser checks against production preview
+        run: npm run test:e2e
+      - name: Retain browser and runtime evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: fixture-verification
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7

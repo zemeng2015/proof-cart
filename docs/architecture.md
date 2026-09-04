@@ -1,7 +1,23 @@
 # Planned architecture
 
-Status: design only; no application modules or runtime guarantees are implemented
-yet. The [charter](charter.md) defines product scope and stable invariants.
+Status: the fixture SSR shell is implemented; commerce, evidence, planning, and
+confirmation modules below remain planned. The [charter](charter.md) defines
+product scope and stable invariants.
+
+## Implemented foundation
+
+`server.ts` rejects unsupported methods before invoking React Router, validates
+fixture configuration, and gives loaders a minimal typed context. The public
+loader emits an explicit field allowlist. Hydrogen supplies the Vite plugin,
+React Router preset, nonce provider, and Oxygen worker integration; React Router's
+handler is called directly to avoid instantiating a Storefront client or implicit
+forwarding endpoints. The production CSP allows local resources and nonce-bearing
+scripts. Framework error messages and request logging exclude arbitrary details.
+
+The credential-free page has SSR, hydration, safe error recovery, a skip link,
+and responsive styles. It makes no commerce calls. Read [local development](development.md)
+for verified versions, compatibility exceptions, local transport limitations,
+and the actual test commands.
 
 ## Components and trust boundaries
 
@@ -45,9 +61,9 @@ calls cart APIs. Shopify owns payment and order completion beyond the handoff.
 | Tests/evaluations | Unit and contract checks, fixed intents, adversarial cases, browser scenarios, accessibility and performance evidence. |
 
 Prefer strict TypeScript, React Router server state, Zod validation, and small
-typed provider ports. Framework/API versions must be verified against current
-official documentation and pinned during scaffold work. No database, state
-framework, or agent framework is selected at bootstrap.
+typed provider ports. Framework versions are pinned in the scaffold; verify the
+Storefront API version when implementing its adapter. No database, state
+framework, or agent framework is selected.
 
 ## Facts, evidence, and planning
 
