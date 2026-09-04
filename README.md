@@ -10,12 +10,13 @@ It is not affiliated with or endorsed by Shopify.
 
 ## Status
 
-**M0: repository foundation.** The charter, roadmap, architecture decisions, and
-development backlog are being established. There is no runnable storefront,
+**M0 complete: repository foundation.** The charter, roadmap, architecture decisions,
+and development backlog are established. There is no runnable storefront,
 live integration, demo, or release yet. Product tests and metrics have not run.
 
 Follow the [roadmap](docs/roadmap.md), [execution state](docs/execution/state.md),
 and [GitHub issues](https://github.com/zemeng2015/proof-cart/issues).
+Next: [PC-01 — application scaffold and CI](https://github.com/zemeng2015/proof-cart/issues/1).
 
 ## Three principles
 

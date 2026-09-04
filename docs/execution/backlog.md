@@ -4,6 +4,15 @@ This list is the M1 implementation queue. All items are planned, not implemented
 Only these eight bounded work items are initially opened on GitHub. M2/M3 remain
 in the [roadmap](../roadmap.md) until their prerequisites are accepted. WIP limit: 2.
 
+GitHub mapping: [PC-01 / #1](https://github.com/zemeng2015/proof-cart/issues/1),
+[PC-02 / #2](https://github.com/zemeng2015/proof-cart/issues/2),
+[PC-03 / #3](https://github.com/zemeng2015/proof-cart/issues/3),
+[PC-04 / #4](https://github.com/zemeng2015/proof-cart/issues/4),
+[PC-05 / #5](https://github.com/zemeng2015/proof-cart/issues/5),
+[PC-06 / #6](https://github.com/zemeng2015/proof-cart/issues/6),
+[PC-07 / #7](https://github.com/zemeng2015/proof-cart/issues/7),
+[PC-08 / #8](https://github.com/zemeng2015/proof-cart/issues/8).
+
 | ID | Priority | Work item | Depends on | Acceptance evidence |
 | --- | --- | --- | --- | --- |
 | PC-01 | P0 | Scaffold Hydrogen, React Router, strict TypeScript, and real CI | M0 | Pin verified official baseline; fresh-clone setup; build, lint, typecheck, unit and fixture smoke commands work without credentials |

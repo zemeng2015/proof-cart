@@ -11,9 +11,9 @@ The long-running development goal is active. Repository creation is only M0.
 ## Current checkpoint
 
 - Mode: Long-Goal Orchestration; bounded implementation followed by independent review.
-- M0: foundation in progress; no application code exists.
+- M0: accepted and published; no application code exists.
 - M1/M2/M3: not started; no release or product test result is claimed.
-- Repository: https://github.com/zemeng2015/proof-cart (public creation authorized).
+- Repository: https://github.com/zemeng2015/proof-cart (public; verified).
 - Default/integration branch: `main`; later feature branches use `codex/`.
 
 ## Ownership and integration
@@ -26,13 +26,23 @@ The long-running development goal is active. Repository creation is only M0.
 
 ## Accepted evidence
 
-The workspace was an empty Git repository on `main` with no existing commits,
-remote, or user files to preserve. No runtime, UI, live-store, safety, or release
-acceptance evidence exists yet. Bootstrap verification will be recorded here.
+An exclusive project directory and fresh Git repository were established after
+detecting a shared-workspace collision during setup. No unrelated project files
+were imported; the shared originals were preserved outside this repository.
+
+- Initial published revision: `6c07b3475dfbf91044ae23ec0a84707d3bcd075e`.
+- Independent review: PASS on all applicable M0 gates; 26 initial public files,
+  44 relative Markdown links/anchors, and eight issue payloads inspected.
+- `git diff --cached --check`: PASS before initial commit.
+- [Initial GitHub repository hygiene run](https://github.com/zemeng2015/proof-cart/actions/runs/33926565932): success.
+- Four GitHub milestones and [eight M1 issues](https://github.com/zemeng2015/proof-cart/issues) created; priority/area labels and private vulnerability reporting configured.
+- [Acceptance record](acceptance-m0.md) preserves the scope and limits of these checks.
+
+No runtime, UI, live-store, safety, or release acceptance evidence exists yet.
 
 ## Next bounded work
 
-PC-01: verify and pin the official Hydrogen/React Router baseline, scaffold the
+[PC-01](https://github.com/zemeng2015/proof-cart/issues/1): verify and pin the official Hydrogen/React Router baseline, scaffold the
 smallest fixture-capable application, and add real install/build/typecheck/lint/test
 commands and CI. Complete PC-02 contracts before adapter and feature parallelism.
 
