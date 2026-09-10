@@ -12,9 +12,12 @@ The long-running development goal is active. Repository creation is only M0.
 
 - Mode: Long-Goal Orchestration; bounded implementation followed by independent review.
 - M0: accepted and published.
-- M1 / PC-01: fixture SSR scaffold accepted for integration through
+- M1 / PC-01: fixture SSR scaffold accepted and merged through
   [PR #9](https://github.com/zemeng2015/proof-cart/pull/9); local and Linux CI checks passed.
-- PC-02 through PC-08 and M2/M3: not implemented; no release is claimed.
+- PC-02: exact-money primitive implemented with 28 targeted tests and 57 total
+  unit/component tests passing; independent review pending. Product/variant,
+  evidence, catalog-port, and proposal contracts remain outstanding.
+- PC-03 through PC-08 and M2/M3: not implemented; no release is claimed.
 - Repository: https://github.com/zemeng2015/proof-cart (public; verified).
 - Default/integration branch: `main`; later feature branches use `codex/`.
 
@@ -49,8 +52,10 @@ fresh public-clone demo, and passing Linux CI. No live-store or release acceptan
 
 ## Next bounded work
 
-[PC-02](https://github.com/zemeng2015/proof-cart/issues/2): implement validated domain,
-money, evidence, and read-only catalog-port contracts before adapter parallelism.
+[PC-02](https://github.com/zemeng2015/proof-cart/issues/2): independently review
+the [exact-money prerequisite](pc02-money-builder.md), then implement validated
+product/variant, evidence, read-only catalog-port, and proposal contracts before
+adapter parallelism. The arithmetic slice alone does not close PC-02.
 
 ## Open decisions and dependencies
 
