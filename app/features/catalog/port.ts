@@ -66,4 +66,3 @@ export function createCatalogPort(adapter: CatalogAdapter, source: CatalogSource
     }, true),
   });
 }
-
