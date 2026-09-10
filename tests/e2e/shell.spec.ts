@@ -57,17 +57,17 @@ test('direct unknown route returns 404 and the recovery link works', async ({pag
   await expect(page.getByRole('heading', {level: 1})).toHaveText('Good choices.Grounded in proof.');
 });
 
-test('keyboard flow reaches main content and the preview status section', async ({page}) => {
+test('keyboard flow reaches main content and catalog search', async ({page}) => {
   await page.goto('/');
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', {name: 'Skip to content'})).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page.locator('#main-content')).toBeFocused();
   await page.keyboard.press('Tab');
-  await expect(page.getByRole('link', {name: /Explore the preview/})).toBeFocused();
+  await expect(page.getByRole('link', {name: /Explore the catalog/})).toBeFocused();
   await page.keyboard.press('Enter');
-  await expect(page.locator('#preview-status')).toBeFocused();
-  await expect(page.getByRole('heading', {name: 'A foundation you can explore.'})).toBeInViewport();
+  await expect(page).toHaveURL('http://127.0.0.1:4173/catalog');
+  await expect(page.getByRole('heading', {name: 'Find your next good choice.'})).toBeInViewport();
 });
 
 test('phone layout stays within the viewport', async ({page}) => {

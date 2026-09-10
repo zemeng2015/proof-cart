@@ -58,7 +58,7 @@ be free. They do not reuse an arbitrary running server.
 
 The advisory scan is explicit instead of running inside setup, so its network
 latency does not slow the fixture setup path. CI runs `npm audit` separately.
-Runtime tests need free loopback ports 4186–4188; they start owned workers,
+Runtime tests need free loopback ports 4186–4189 and 4191; they start owned workers,
 verify startup, propagate test cancellation to requests, and clean up the owned
 process tree. They refuse occupied ports. In both development and production
 preview they exercise normal keep-alive clients with Content-Length and explicit
@@ -138,35 +138,31 @@ increment.
 
 ## Request and data boundary
 
-Only GET and HEAD enter the application router. Other methods return HTTP 405
-before any route handler runs. The loader returns an explicit public field
-allowlist; it never spreads environment values, context, tokens, or exceptions.
-Framework error reporting is replaced with fixed messages, and Mini Oxygen's
-request-line callback is disabled with a non-null no-op to avoid recording
-arbitrary URLs/query strings.
+GET and HEAD enter the application router. POST is accepted only for `/compare`
+and `/compare.data`: the worker requires an exact same-origin Origin header,
+urlencoded UTF-8 content, and a complete body of at most 64 KiB within five
+seconds. Other methods/routes retain HTTP 405. The comparison action only
+validates product selection and refreshes catalog facts; it grants no cart
+permission and persists no state. Public loaders never spread environment values,
+context, tokens, or exceptions. Framework errors and Mini Oxygen request logging
+remain fixed/disabled to keep supplied URL, body, and environment values out.
 
-The local Vite dev/preview bridge has a deliberately bounded transport workaround
-in `scripts/vite-fixture-transport.ts`. Mini Oxygen 4.2.2 / Miniflare 3 can reset a
-reused connection when the worker rejects a streaming body before consuming it.
-For body-bearing requests, the bridge selects `Connection: close` and removes
-`Keep-Alive`. This sacrifices local connection reuse for those requests without
-adding retries or buffering. Vite's automatic CORS middleware is disabled so
-OPTIONS reaches the same worker policy.
+Mini Oxygen 4.2.2's Node-to-web conversion only forwards bodies with a
+Content-Length header. `scripts/request-body-bridge.ts` now buffers complete
+Content-Length or chunked requests within 64 KiB/five seconds, then re-enters the
+Connect middleware stack with a fresh readable carrying the exact decoded bytes
+and normalized Content-Length. It rejects incomplete, oversized, slow, and
+GET/HEAD bodies before worker dispatch. Body-bearing local responses close their
+connections to avoid the documented Miniflare reuse reset; there are no retries.
+The deployed worker has independent limits in `app/lib/form-request.server.ts`.
 
-Mini Oxygen's current Node-to-web conversion also omits chunked bodies while
-forwarding `Transfer-Encoding`, which Undici rejects before the worker receives
-the request. For non-GET/non-HEAD methods only, the local plugin removes that
-hop-by-hop header. The worker unconditionally rejects these methods with 405;
-their chunked bodies are intentionally discarded. GET/HEAD are excluded from
-Transfer-Encoding removal, and the worker's method policy is unchanged. The chunked regression proves rejection,
-**not body forwarding**. This workaround applies only to local dev/preview and
-is not part of the built worker.
-
-Before enabling **any action or other accepted request body**, remove this
-reject-only workaround and verify complete, bounded body forwarding for both
-Content-Length and chunked requests, including persistent connections and
-concurrent requests. That requirement applies to the first future action,
-including an M1 action, rather than waiting for cart mutation work.
+The separate test-only Oxygen worker verifies byte counts and SHA-256 hashes
+through both dev and preview: Unicode/multichunk bodies, both framing modes,
+concurrent requests, persistent clients, limits, aborts, timeouts, and recovery.
+It is not built into the application. Application runtime checks also submit a
+real comparison removal with both framing modes and reject cross-origin and
+unsupported-content-type forms. Vite CORS middleware remains disabled so OPTIONS
+reaches the worker's method policy.
 
 Hydrogen provides a random script nonce and the React nonce context. Its default
 CSP merges merchant/CDN hosts, so the fixture constructs a separate self-only

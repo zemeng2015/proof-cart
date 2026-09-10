@@ -1,12 +1,14 @@
 # Planned architecture
 
-Status: the fixture SSR shell is implemented; commerce, evidence, planning, and
-confirmation modules below remain planned. The [charter](charter.md) defines
+Status: fixture catalog routes, typed read adapters, evidence snapshots, and
+data-only proposals are implemented. Planning and confirmation execution remain
+planned. The [charter](charter.md) defines
 product scope and stable invariants.
 
 ## Implemented foundation
 
-`server.ts` rejects unsupported methods before invoking React Router, validates
+`server.ts` rejects unsupported methods before invoking React Router, admits only
+bounded same-origin urlencoded comparison POSTs, validates
 fixture configuration, and gives loaders a minimal typed context. The public
 loader emits an explicit field allowlist. Hydrogen supplies the Vite plugin,
 React Router preset, nonce provider, and Oxygen worker integration; React Router's
@@ -14,8 +16,12 @@ handler is called directly to avoid instantiating a Storefront client or implici
 forwarding endpoints. The production CSP allows local resources and nonce-bearing
 scripts. Framework error messages and request logging exclude arbitrary details.
 
-The credential-free page has SSR, hydration, safe error recovery, a skip link,
-and responsive styles. It makes no commerce calls. Read [local development](development.md)
+The credential-free routes have SSR, hydration, safe error recovery, a skip link,
+and responsive styles. They read synthetic catalog facts through the validated
+catalog port; no cart or checkout calls exist. Comparison selection is represented
+by up to three unique product IDs in the URL. The fetcher removal action validates
+the form, re-reads the remaining products, and redirects to the canonical GET URL.
+It creates no session, persistence, or approval authority. Read [local development](development.md)
 for verified versions, compatibility exceptions, local transport limitations,
 and the actual test commands.
 

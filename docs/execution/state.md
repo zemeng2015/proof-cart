@@ -23,10 +23,13 @@ The long-running development goal is active. Repository creation is only M0.
   and [domain contract](../domain-contract.md).
 - PC-03: accepted through [PR #11](https://github.com/zemeng2015/proof-cart/pull/11),
   with independent review and passing Linux CI. See the [verification record](acceptance-pc03.md).
-- PC-04: typed Storefront catalog and offline code generation implemented on
-  `codex/pc04-storefront`; independent review and local checks pass (191 tests,
-  97.48% aggregate branches). See the [verification record](acceptance-pc04.md).
-- PC-05 through PC-08 and M2/M3: not implemented; no release is claimed.
+- PC-04: accepted and merged through [PR #12](https://github.com/zemeng2015/proof-cart/pull/12),
+  with independent review and passing Linux CI. See the [verification record](acceptance-pc04.md).
+- PC-05: fixture search/detail/compare and bounded form transport implemented on
+  `codex/pc05-catalog-ui`. Independent static review and local integration checks
+  pass: 220 unit tests, 97.46% aggregate branches, five runtime cases and 13 browser
+  cases. Remote checks must pass before merge. See [verification](acceptance-pc05.md).
+- PC-06 through PC-08 and M2/M3: not implemented; no release is claimed.
 - Repository: https://github.com/zemeng2015/proof-cart (public; verified).
 - Default/integration branch: `main`; later feature branches use `codex/`.
 
@@ -61,12 +64,12 @@ fresh public-clone demo, and passing Linux CI. No live-store or release acceptan
 
 ## Next bounded work
 
-[PC-05](https://github.com/zemeng2015/proof-cart/issues/5): after PC-04 remote
-checks and merge, connect the fixture catalog to accessible search, detail, and
-comparison routes. Any action or accepted request body first requires correcting
-the local runtime transport. Live Storefront verification remains unresolved.
+[PC-06](https://github.com/zemeng2015/proof-cart/issues/6): after PC-05 remote
+checks and merge, implement validated intent and deterministic read-only planning
+with sourced reasons and a bounded tool budget. Live Storefront verification
+remains unresolved.
 
-Latest checks are retained under `.local/proposal-*.log` and `coverage/`:
+Historical PC-02 checks were retained under `.local/proposal-*.log`:
 124 tests across nine files, typecheck, lint, and coverage pass. Pinned additions
 Zod 4.5.4 and coverage-v8 5.0.0 were audited with zero reported vulnerabilities
 (`.local/pc02-audit.json`). CI runs coverage and retains its reports; both Linux
@@ -77,11 +80,10 @@ foundation checks, not full-flow browser/release evidence.
 ## Open decisions and dependencies
 
 - Framework/runtime versions and security compatibility overrides are documented
-  in [local development](../development.md); verify API versions during PC-04.
-- The local Mini Oxygen request bridge must be replaced or corrected before any
-  action or accepted request body is introduced:
-  its installed implementation does not forward chunked bodies. Read-only rejection
-  tests cannot establish correct request-body forwarding.
+  in [local development](../development.md). Storefront API 2026-04 matches the
+  pinned offline schema; no live API evidence exists.
+- The corrected local body bridge and worker form limits must retain their
+  dev/preview byte-integrity and negative-path tests when more actions are added.
 - Name remains provisional; basic public collision checks are not trademark clearance.
 - Choose server session and atomic one-time consumption/idempotency storage before M2.
 - Shopify credentials and an authorized development store are needed for live evidence.
