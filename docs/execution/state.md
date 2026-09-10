@@ -14,9 +14,13 @@ The long-running development goal is active. Repository creation is only M0.
 - M0: accepted and published.
 - M1 / PC-01: fixture SSR scaffold accepted and merged through
   [PR #9](https://github.com/zemeng2015/proof-cart/pull/9); local and Linux CI checks passed.
-- PC-02: exact-money primitive implemented with 28 targeted tests and 57 total
-  unit/component tests passing; independent review pending. Product/variant,
-  evidence, catalog-port, and proposal contracts remain outstanding.
+- PC-02: exact money, strict product/variant schemas, bound evidence snapshots,
+  the read-only catalog boundary, and data-only CartProposal validation are
+  implemented in the feature worktree. All 124 unit/component tests, typecheck,
+  and lint pass locally; per-file branch thresholds of 85% pass (95.21% aggregate).
+  Independent review recheck and local integration verification passed; remote
+  CI and merge remain pending. See the [verification record](acceptance-pc02.md)
+  and [domain contract](../domain-contract.md).
 - PC-03 through PC-08 and M2/M3: not implemented; no release is claimed.
 - Repository: https://github.com/zemeng2015/proof-cart (public; verified).
 - Default/integration branch: `main`; later feature branches use `codex/`.
@@ -52,10 +56,17 @@ fresh public-clone demo, and passing Linux CI. No live-store or release acceptan
 
 ## Next bounded work
 
-[PC-02](https://github.com/zemeng2015/proof-cart/issues/2): independently review
-the [exact-money prerequisite](pc02-money-builder.md), then implement validated
-product/variant, evidence, read-only catalog-port, and proposal contracts before
-adapter parallelism. The arithmetic slice alone does not close PC-02.
+[PC-02](https://github.com/zemeng2015/proof-cart/issues/2): run remote CI and merge
+the reviewed contract before adapter parallelism. The reviewer requested missing
+foreign-rationale and reused-claim negative tests; the recheck now passes.
+
+Latest checks are retained under `.local/proposal-*.log` and `coverage/`:
+124 tests across nine files, typecheck, lint, and coverage pass. Pinned additions
+Zod 4.5.4 and coverage-v8 5.0.0 were audited with zero reported vulnerabilities
+(`.local/pc02-audit.json`). CI now runs coverage and retains its reports; this
+change has not yet run remotely. Final build, three runtime cases, and six
+foundation browser cases also passed. These are local feature checks, not remote
+acceptance or full-flow browser/release evidence.
 
 ## Open decisions and dependencies
 
