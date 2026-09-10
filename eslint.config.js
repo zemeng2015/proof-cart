@@ -3,7 +3,7 @@ import tseslint from 'typescript-eslint';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 
 export default tseslint.config(
-  {ignores: ['node_modules/**', 'dist/**', '.react-router/**', '.local/**', 'coverage/**', 'playwright-report/**', 'test-results/**']},
+  {ignores: ['node_modules/**', 'dist/**', '.react-router/**', '.local/**', 'coverage/**', 'playwright-report/**', 'test-results/**', '**/*.generated.d.ts']},
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {languageOptions: {globals: {console: 'readonly', process: 'readonly', URL: 'readonly', fetch: 'readonly', AbortSignal: 'readonly'}}},
