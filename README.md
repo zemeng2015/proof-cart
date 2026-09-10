@@ -17,7 +17,8 @@ and checkout handoff are not implemented yet. No live-store or release claim is 
 
 Follow the [roadmap](docs/roadmap.md), [execution state](docs/execution/state.md),
 and [GitHub issues](https://github.com/zemeng2015/proof-cart/issues).
-Current increment: [PC-01 — application scaffold and CI](https://github.com/zemeng2015/proof-cart/issues/1).
+Accepted foundation: [PC-01 verification](docs/execution/acceptance-pc01.md).
+Next: [PC-02 — catalog, money, and evidence contracts](https://github.com/zemeng2015/proof-cart/issues/2).
 
 ## Three principles
 

@@ -1,6 +1,6 @@
 # Execution state
 
-Updated: 2026-09-04
+Updated: 2026-09-10
 
 ## Long-term objective
 
@@ -12,8 +12,8 @@ The long-running development goal is active. Repository creation is only M0.
 
 - Mode: Long-Goal Orchestration; bounded implementation followed by independent review.
 - M0: accepted and published.
-- M1 / PC-01: fixture SSR scaffold implemented, undergoing independent integration
-  verification. Local transport regressions are being resolved before acceptance.
+- M1 / PC-01: fixture SSR scaffold accepted for integration through
+  [PR #9](https://github.com/zemeng2015/proof-cart/pull/9); local and Linux CI checks passed.
 - PC-02 through PC-08 and M2/M3: not implemented; no release is claimed.
 - Repository: https://github.com/zemeng2015/proof-cart (public; verified).
 - Default/integration branch: `main`; later feature branches use `codex/`.
@@ -42,14 +42,14 @@ were imported; the shared originals were preserved outside this repository.
 - Four GitHub milestones and [eight M1 issues](https://github.com/zemeng2015/proof-cart/issues) created; priority/area labels and private vulnerability reporting configured.
 - [Acceptance record](acceptance-m0.md) preserves the scope and limits of these checks.
 
-M0 evidence above concerns repository setup only. PC-01 evidence will be recorded
-separately after integration; no live-store or release acceptance exists.
+M0 evidence above concerns repository setup only. The [PC-01 acceptance record](acceptance-pc01.md)
+records independent review, 29 unit/component tests, 3 real-process runtime cases,
+6 Chromium scenarios, desktop/phone visual checks, a 125.8-second warm-cache
+fresh public-clone demo, and passing Linux CI. No live-store or release acceptance exists.
 
 ## Next bounded work
 
-[PC-01](https://github.com/zemeng2015/proof-cart/issues/1): finish the local simulator
-transport regression checks, independent review, and CI acceptance. Then dispatch
-[PC-02](https://github.com/zemeng2015/proof-cart/issues/2) for validated domain,
+[PC-02](https://github.com/zemeng2015/proof-cart/issues/2): implement validated domain,
 money, evidence, and read-only catalog-port contracts before adapter parallelism.
 
 ## Open decisions and dependencies

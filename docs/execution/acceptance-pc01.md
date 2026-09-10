@@ -1,6 +1,6 @@
 # PC-01 integration evidence
 
-Date: 2026-09-04. Scope: the credential-free, read-only foundation shell in
+Started: 2026-09-04. Accepted: 2026-09-10. Scope: the credential-free, read-only foundation shell in
 [issue #1](https://github.com/zemeng2015/proof-cart/issues/1).
 This is not M1 completion or v0.1 release acceptance.
 
@@ -80,6 +80,16 @@ The readiness matcher now strips terminal control codes only for matching while
 retaining raw evidence. On 2026-09-10, the actual runtime suite with `CI=true`
 and `FORCE_COLOR=1` passed all 3 cases (26.94 seconds, exit 0).
 
-GitHub CI and final integration are pending; issue #1 stays open until those
-checks pass. Local implementation and independent review passed for the bounded
-foundation scope.
+The corrected source revision `a00b6306a6b7311ada1e09c076c63a6c95e76323`
+passed the full [Linux application workflow](https://github.com/zemeng2015/proof-cart/actions/runs/34482874617)
+on 2026-09-10: install, audit, strict typecheck, lint, unit tests, worker build,
+Chromium installation, runtime tests, browser tests, and evidence upload.
+The separate repository hygiene check passed as well. Raw downloaded CI
+artifacts remain under ignored `.local/ci-pc01-passed/` in the integration repository.
+
+Scope, architecture, safety, test, regression, integration-verification, and
+foundation product gates pass. The main agent accepts PC-01 for integration
+through [PR #9](https://github.com/zemeng2015/proof-cart/pull/9), following
+independent implementation review and independent review of the ANSI correction.
+Only documentation changes follow the tested source revision. PC-02 is the next
+dependency; M1 and the full v0.1 goal remain incomplete.
