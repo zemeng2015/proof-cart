@@ -18,8 +18,8 @@ The long-running development goal is active. Repository creation is only M0.
   the read-only catalog boundary, and data-only CartProposal validation are
   implemented in the feature worktree. All 124 unit/component tests, typecheck,
   and lint pass locally; per-file branch thresholds of 85% pass (95.21% aggregate).
-  Independent review recheck and local integration verification passed; remote
-  CI and merge remain pending. See the [verification record](acceptance-pc02.md)
+  Independent review, local integration, and Linux CI passed in
+  [PR #10](https://github.com/zemeng2015/proof-cart/pull/10). See the [verification record](acceptance-pc02.md)
   and [domain contract](../domain-contract.md).
 - PC-03 through PC-08 and M2/M3: not implemented; no release is claimed.
 - Repository: https://github.com/zemeng2015/proof-cart (public; verified).
@@ -56,17 +56,18 @@ fresh public-clone demo, and passing Linux CI. No live-store or release acceptan
 
 ## Next bounded work
 
-[PC-02](https://github.com/zemeng2015/proof-cart/issues/2): run remote CI and merge
-the reviewed contract before adapter parallelism. The reviewer requested missing
-foreign-rationale and reused-claim negative tests; the recheck now passes.
+[PC-03](https://github.com/zemeng2015/proof-cart/issues/3): implement the
+credential-free deterministic fixture adapter against the reviewed PC-02
+contracts after PR #10 is merged. Preserve unknown, unavailable, and injected
+description cases; no catalog network calls in fixture mode.
 
 Latest checks are retained under `.local/proposal-*.log` and `coverage/`:
 124 tests across nine files, typecheck, lint, and coverage pass. Pinned additions
 Zod 4.5.4 and coverage-v8 5.0.0 were audited with zero reported vulnerabilities
-(`.local/pc02-audit.json`). CI now runs coverage and retains its reports; this
-change has not yet run remotely. Final build, three runtime cases, and six
-foundation browser cases also passed. These are local feature checks, not remote
-acceptance or full-flow browser/release evidence.
+(`.local/pc02-audit.json`). CI runs coverage and retains its reports; both Linux
+application runs for source revision `b81add2` passed. Final build, three runtime
+cases, and six foundation browser cases also passed. These are contract and
+foundation checks, not full-flow browser/release evidence.
 
 ## Open decisions and dependencies
 

@@ -1,7 +1,14 @@
 # PC-02 domain contract verification
 
-Status: independent implementation review and local integration checks passed;
-remote CI and merge pending. This is not M1 or v0.1 release acceptance.
+Status: independent review, local integration, and Linux CI passed for source
+revision `b81add2555060f4898c55b7191bfea51fed5035d` in
+[PR #10](https://github.com/zemeng2015/proof-cart/pull/10).
+This is not M1 or v0.1 release acceptance.
+
+Linux runs [34495555947](https://github.com/zemeng2015/proof-cart/actions/runs/34495555947)
+and [34495580789](https://github.com/zemeng2015/proof-cart/actions/runs/34495580789)
+passed the full workflow with npm 11.11.0. Downloaded coverage artifacts confirm
+the same branch counts as the local run below.
 
 ## Implemented scope
 
