@@ -5,18 +5,20 @@ Evidence-backed shopping recommendations with human-confirmed cart mutations.
 **Agent recommends. Buyer decides. Shopify completes checkout.**
 
 Proof Cart is an independent, early-stage reference application for a buyer-facing
-storefront. The planned stack is Hydrogen, React Router, and strict TypeScript.
+storefront built with Hydrogen, React Router, and strict TypeScript.
 It is not affiliated with or endorsed by Shopify.
 
 ## Status
 
-**M0 complete: repository foundation.** The charter, roadmap, architecture decisions,
-and development backlog are established. There is no runnable storefront,
-live integration, demo, or release yet. Product tests and metrics have not run.
+**M1 in progress: runnable foundation preview.** The credential-free application
+serves an SSR home page with client hydration, safe route errors, and a responsive
+keyboard-accessible shell. Search, catalog evidence, recommendations, cart actions,
+and checkout handoff are not implemented yet. No live-store or release claim is made.
 
 Follow the [roadmap](docs/roadmap.md), [execution state](docs/execution/state.md),
 and [GitHub issues](https://github.com/zemeng2015/proof-cart/issues).
-Next: [PC-01 — application scaffold and CI](https://github.com/zemeng2015/proof-cart/issues/1).
+Accepted foundation: [PC-01 verification](docs/execution/acceptance-pc01.md).
+Next: [PC-02 — catalog, money, and evidence contracts](https://github.com/zemeng2015/proof-cart/issues/2).
 
 ## Three principles
 
@@ -50,13 +52,32 @@ product detail, comparison of at most three candidates, and an evidence drawer.
 Deterministic planning comes first. An optional model provider must never gain
 cart permissions or invent product facts.
 
-There are no setup or demo commands in M0. M1 will add real `npm run setup`,
-`npm run demo:fixture`, `npm test`, and `npm run test:e2e` commands, alongside
-type checking, linting, and a production build. The clean-clone fixture setup
-target is ten minutes or less; this has not yet been measured.
+Use Node **24.20.0** and npm **11.11.0**:
 
-Repository hygiene can currently be checked with `git diff --check`. This is
-not an application test or evidence that the safety design is implemented.
+```sh
+git clone https://github.com/zemeng2015/proof-cart.git
+cd proof-cart
+npm run setup
+npm run demo:fixture
+```
+
+Open `http://127.0.0.1:4173`. Installation needs the npm registry; the running
+fixture preview uses local assets and needs no Shopify account, token, or `.env`.
+
+```sh
+npm run typecheck
+npm run lint
+npm test
+npm run build
+npm run test:runtime
+npx playwright install chromium
+npm run test:e2e
+```
+
+See [local development](docs/development.md) for Linux browser dependencies,
+port overrides, the pinned framework compatibility exceptions, and test scope.
+These scaffold checks do not establish the complete cart, provenance, accessibility,
+performance, or live-store acceptance targets in the charter.
 
 ## Project documents
 
@@ -64,6 +85,7 @@ not an application test or evidence that the safety design is implemented.
 - [Milestones and acceptance criteria](docs/roadmap.md)
 - [Architecture](docs/architecture.md)
 - [Threat model](docs/threat-model.md)
+- [Local development and dependency baseline](docs/development.md)
 - [Evidence and read-only planning decision](docs/adr/0001-evidence-and-read-only-planning.md)
 - [Confirmation and checkout decision](docs/adr/0002-confirmation-and-checkout-boundary.md)
 - [First sprint backlog](docs/execution/backlog.md)

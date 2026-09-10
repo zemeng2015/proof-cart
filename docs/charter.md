@@ -4,8 +4,8 @@ Evidence-backed shopping recommendations with human-confirmed cart mutations.
 
 > Agent recommends. Buyer decides. Shopify completes checkout.
 
-Status: planned product. This repository currently contains bootstrap documentation;
-it does not yet implement the behavior or meet the acceptance targets below. See
+Status: M1 in progress, with a runnable fixture foundation shell. The complete
+shopping behavior and release acceptance targets below are not implemented. See
 [execution state](execution/state.md) for accepted evidence and remaining work.
 
 ## Purpose and users
@@ -121,9 +121,9 @@ check does not establish any product behavior.
 Release artifacts include fixture and authorized Storefront-mode verification, a
 decision trace (intent → evidence → proposal → cart diff), a failure/evaluation
 matrix, known limitations, raw results, a 90–120 second English demo, a 60–90 second
-README GIF, and the `v0.1.0` tag. Planned commands are `npm run setup`, `npm test`,
-`npm run demo:fixture`, and `npm run test:e2e`; they do not exist at bootstrap and
-must be implemented with the application. A live-store dependency must be recorded
+README GIF, and the `v0.1.0` tag. Commands `npm run setup`, `npm test`,
+`npm run demo:fixture`, and `npm run test:e2e` currently exercise the foundation
+shell; extend them with each feature. A live-store dependency must be recorded
 as unresolved until tested with an authorized environment.
 
 Before package distribution or a release, check the working name `proof-cart`

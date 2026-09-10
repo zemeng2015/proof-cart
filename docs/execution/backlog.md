@@ -1,6 +1,7 @@
 # Initial development backlog
 
-This list is the M1 implementation queue. All items are planned, not implemented.
+This list is the M1 implementation queue. PC-01 passed integration verification;
+PC-02 through PC-08 remain planned. Consult [execution state](state.md) for acceptance.
 Only these eight bounded work items are initially opened on GitHub. M2/M3 remain
 in the [roadmap](../roadmap.md) until their prerequisites are accepted. WIP limit: 2.
 
