@@ -37,8 +37,8 @@ jobs:
         run: npm run typecheck
       - name: Lint application and tests
         run: npm run lint
-      - name: Unit and component checks
-        run: npm test
+      - name: Unit, component, and domain coverage checks
+        run: npm run test:coverage
       - name: Build SSR worker and browser bundle
         run: npm run build
         env:
@@ -58,5 +58,6 @@ jobs:
           path: |
             playwright-report/
             test-results/
+            coverage/
           if-no-files-found: ignore
           retention-days: 7

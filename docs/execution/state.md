@@ -12,9 +12,16 @@ The long-running development goal is active. Repository creation is only M0.
 
 - Mode: Long-Goal Orchestration; bounded implementation followed by independent review.
 - M0: accepted and published.
-- M1 / PC-01: fixture SSR scaffold accepted for integration through
+- M1 / PC-01: fixture SSR scaffold accepted and merged through
   [PR #9](https://github.com/zemeng2015/proof-cart/pull/9); local and Linux CI checks passed.
-- PC-02 through PC-08 and M2/M3: not implemented; no release is claimed.
+- PC-02: exact money, strict product/variant schemas, bound evidence snapshots,
+  the read-only catalog boundary, and data-only CartProposal validation are
+  implemented in the feature worktree. All 124 unit/component tests, typecheck,
+  and lint pass locally; per-file branch thresholds of 85% pass (95.21% aggregate).
+  Independent review, local integration, and Linux CI passed in
+  [PR #10](https://github.com/zemeng2015/proof-cart/pull/10). See the [verification record](acceptance-pc02.md)
+  and [domain contract](../domain-contract.md).
+- PC-03 through PC-08 and M2/M3: not implemented; no release is claimed.
 - Repository: https://github.com/zemeng2015/proof-cart (public; verified).
 - Default/integration branch: `main`; later feature branches use `codex/`.
 
@@ -49,8 +56,18 @@ fresh public-clone demo, and passing Linux CI. No live-store or release acceptan
 
 ## Next bounded work
 
-[PC-02](https://github.com/zemeng2015/proof-cart/issues/2): implement validated domain,
-money, evidence, and read-only catalog-port contracts before adapter parallelism.
+[PC-03](https://github.com/zemeng2015/proof-cart/issues/3): implement the
+credential-free deterministic fixture adapter against the reviewed PC-02
+contracts after PR #10 is merged. Preserve unknown, unavailable, and injected
+description cases; no catalog network calls in fixture mode.
+
+Latest checks are retained under `.local/proposal-*.log` and `coverage/`:
+124 tests across nine files, typecheck, lint, and coverage pass. Pinned additions
+Zod 4.5.4 and coverage-v8 5.0.0 were audited with zero reported vulnerabilities
+(`.local/pc02-audit.json`). CI runs coverage and retains its reports; both Linux
+application runs for source revision `b81add2` passed. Final build, three runtime
+cases, and six foundation browser cases also passed. These are contract and
+foundation checks, not full-flow browser/release evidence.
 
 ## Open decisions and dependencies
 
