@@ -20,7 +20,9 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "test:runtime": "node --test tests/runtime/server.test.mjs"
+    "test:runtime": "node --test tests/runtime/server.test.mjs",
+    "codegen": "graphql-codegen --config codegen.ts",
+    "codegen:check": "node scripts/check-codegen.mjs"
   },
   "dependencies": {
     "@shopify/hydrogen": "2026.4.5",
@@ -31,8 +33,10 @@
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",
+    "@graphql-codegen/cli": "7.4.1",
     "@playwright/test": "1.58.2",
     "@react-router/dev": "7.18.3",
+    "@shopify/hydrogen-codegen": "0.3.3",
     "@shopify/mini-oxygen": "4.2.2",
     "@shopify/oxygen-workers-types": "4.2.0",
     "@testing-library/dom": "10.4.1",
@@ -45,6 +49,7 @@
     "@vitest/coverage-v8": "5.0.0",
     "eslint": "9.39.5",
     "eslint-plugin-jsx-a11y": "6.10.2",
+    "graphql": "16.13.1",
     "jsdom": "27.4.0",
     "typescript": "5.9.3",
     "typescript-eslint": "8.69.0",
@@ -67,6 +72,9 @@
     "@shopify/hydrogen": {
       "react-router": "$react-router",
       "@react-router/dev": "$@react-router/dev"
+    },
+    "@shopify/hydrogen-codegen": {
+      "lodash": "4.18.1"
     }
   }
 }

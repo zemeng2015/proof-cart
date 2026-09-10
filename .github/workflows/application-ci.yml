@@ -33,6 +33,8 @@ jobs:
         run: npm ci --no-audit
       - name: Audit the locked dependency graph
         run: npm audit
+      - name: Verify offline Storefront code generation
+        run: npm run codegen:check
       - name: Generate route types and check strict TypeScript
         run: npm run typecheck
       - name: Lint application and tests

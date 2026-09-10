@@ -11,7 +11,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       include: ['app/features/catalog/**/*.ts', 'app/features/cart/**/*.ts'],
-      exclude: ['app/features/catalog/domain.ts'],
+      exclude: ['app/features/catalog/domain.ts', '**/*.generated.d.ts'],
       reporter: ['text', 'json', 'json-summary', 'lcov'],
       reportsDirectory: 'coverage',
       thresholds: {perFile: true, branches: 85},

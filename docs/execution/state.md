@@ -21,10 +21,12 @@ The long-running development goal is active. Repository creation is only M0.
   Independent review, local integration, and Linux CI passed in
   [PR #10](https://github.com/zemeng2015/proof-cart/pull/10). See the [verification record](acceptance-pc02.md)
   and [domain contract](../domain-contract.md).
-- PC-03: fixture adapter and ten independent contract tests implemented on
-  `codex/pc03-fixtures`; static review and local verification pass. All 134 tests
-  pass with 95.30% aggregate branch coverage. See the [verification record](acceptance-pc03.md).
-- PC-04 through PC-08 and M2/M3: not implemented; no release is claimed.
+- PC-03: accepted through [PR #11](https://github.com/zemeng2015/proof-cart/pull/11),
+  with independent review and passing Linux CI. See the [verification record](acceptance-pc03.md).
+- PC-04: typed Storefront catalog and offline code generation implemented on
+  `codex/pc04-storefront`; independent review and local checks pass (191 tests,
+  97.48% aggregate branches). See the [verification record](acceptance-pc04.md).
+- PC-05 through PC-08 and M2/M3: not implemented; no release is claimed.
 - Repository: https://github.com/zemeng2015/proof-cart (public; verified).
 - Default/integration branch: `main`; later feature branches use `codex/`.
 
@@ -59,10 +61,10 @@ fresh public-clone demo, and passing Linux CI. No live-store or release acceptan
 
 ## Next bounded work
 
-[PC-04](https://github.com/zemeng2015/proof-cart/issues/4): after PC-03 remote
-checks and merge, implement the typed official Storefront boundary with mocked
-contracts and code generation. Fixture mode remains the credential-free default.
-Live verification stays a separate unresolved dependency.
+[PC-05](https://github.com/zemeng2015/proof-cart/issues/5): after PC-04 remote
+checks and merge, connect the fixture catalog to accessible search, detail, and
+comparison routes. Any action or accepted request body first requires correcting
+the local runtime transport. Live Storefront verification remains unresolved.
 
 Latest checks are retained under `.local/proposal-*.log` and `coverage/`:
 124 tests across nine files, typecheck, lint, and coverage pass. Pinned additions
