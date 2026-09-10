@@ -24,6 +24,7 @@ or a complete clean-clone-to-demo measurement.
 | Chromium browser checks | PASS, 6 cases, no retries needed locally |
 | Visual inspection | PASS at 1440px desktop and 360px phone widths; phone document width 360px |
 | Dependency review | Exact pins/lock and disclosed exceptions inspected; builder audit reported 0 advisories |
+| Fresh public clone to demo | PASS, 125.8 seconds, existing npm cache, no dependency directory copied |
 
 Runtime cases exercise opaque unsupported-mode 503 responses and both dev and
 production-preview processes. Each normal-mode process receives 20 sequential
@@ -63,6 +64,22 @@ metric is established here. Framework deprecation/future-flag notices remain.
 
 ## Integration status
 
-Local implementation and verification are complete. Clean-clone rehearsal,
-GitHub CI, and final integration are pending; issue #1 stays open until those
-checks and the final documentation review are complete.
+The clean-clone rehearsal fetched public branch commit
+`fdceabd5e18d6e60142261a6a5da406bf3a2fc56`, ran `npm run setup`, built and
+started the fixture demo, and verified its actual HTTP 200 page. It used Node
+24.20.0/npm 11.11.0, with no `.env` or Shopify credential configured. Raw setup,
+demo, and measured-result files remain under ignored `.local/clean-clone-evidence/`.
+The full 125.8 seconds includes cloning, installation, build, and server readiness;
+it is a warm-cache foundation measurement, not the later full-storefront benchmark.
+
+The first [Linux application run](https://github.com/zemeng2015/proof-cart/actions/runs/33929199557)
+passed installation, audit, typecheck, lint, unit tests, and build. Its runtime
+harness could not recognize the colored Vite startup URL: ANSI codes split the
+port from the hostname. The raw failure and worker logs are preserved. The
+The readiness matcher now strips terminal control codes only for matching while
+retaining raw evidence. On 2026-09-10, the actual runtime suite with `CI=true`
+and `FORCE_COLOR=1` passed all 3 cases (26.94 seconds, exit 0).
+
+GitHub CI and final integration are pending; issue #1 stays open until those
+checks pass. Local implementation and independent review passed for the bounded
+foundation scope.

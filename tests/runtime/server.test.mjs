@@ -6,7 +6,7 @@ import http from 'node:http';
 import {createServer} from 'node:net';
 import {setTimeout as delay} from 'node:timers/promises';
 import {test} from 'node:test';
-import {promisify} from 'node:util';
+import {promisify, stripVTControlCharacters} from 'node:util';
 
 async function assertFreePort(port) {
   const probe = createServer();
@@ -94,7 +94,7 @@ async function withServer(command, port, mode, signal, check) {
       signal.throwIfAborted();
       assert.equal(exited, false, 'Owned Vite process terminated before becoming ready');
       try {
-        assert.ok(output.join('').includes(base), 'Wait for the owned Vite startup message');
+        assert.ok(stripVTControlCharacters(output.join('')).includes(base), 'Wait for the owned Vite startup message');
         const response = await request(base);
         await response.text();
         assert.equal(exited, false, 'Owned Vite process must still be running');
