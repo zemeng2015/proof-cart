@@ -16,12 +16,15 @@ The long-running development goal is active. Repository creation is only M0.
   [PR #9](https://github.com/zemeng2015/proof-cart/pull/9); local and Linux CI checks passed.
 - PC-02: exact money, strict product/variant schemas, bound evidence snapshots,
   the read-only catalog boundary, and data-only CartProposal validation are
-  implemented in the feature worktree. All 124 unit/component tests, typecheck,
+  accepted and merged. All 124 unit/component tests, typecheck,
   and lint pass locally; per-file branch thresholds of 85% pass (95.21% aggregate).
   Independent review, local integration, and Linux CI passed in
   [PR #10](https://github.com/zemeng2015/proof-cart/pull/10). See the [verification record](acceptance-pc02.md)
   and [domain contract](../domain-contract.md).
-- PC-03 through PC-08 and M2/M3: not implemented; no release is claimed.
+- PC-03: fixture adapter and ten independent contract tests implemented on
+  `codex/pc03-fixtures`; static review and local verification pass. All 134 tests
+  pass with 95.30% aggregate branch coverage. See the [verification record](acceptance-pc03.md).
+- PC-04 through PC-08 and M2/M3: not implemented; no release is claimed.
 - Repository: https://github.com/zemeng2015/proof-cart (public; verified).
 - Default/integration branch: `main`; later feature branches use `codex/`.
 
@@ -56,10 +59,10 @@ fresh public-clone demo, and passing Linux CI. No live-store or release acceptan
 
 ## Next bounded work
 
-[PC-03](https://github.com/zemeng2015/proof-cart/issues/3): implement the
-credential-free deterministic fixture adapter against the reviewed PC-02
-contracts after PR #10 is merged. Preserve unknown, unavailable, and injected
-description cases; no catalog network calls in fixture mode.
+[PC-04](https://github.com/zemeng2015/proof-cart/issues/4): after PC-03 remote
+checks and merge, implement the typed official Storefront boundary with mocked
+contracts and code generation. Fixture mode remains the credential-free default.
+Live verification stays a separate unresolved dependency.
 
 Latest checks are retained under `.local/proposal-*.log` and `coverage/`:
 124 tests across nine files, typecheck, lint, and coverage pass. Pinned additions
