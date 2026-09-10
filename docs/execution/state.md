@@ -25,11 +25,14 @@ The long-running development goal is active. Repository creation is only M0.
   with independent review and passing Linux CI. See the [verification record](acceptance-pc03.md).
 - PC-04: accepted and merged through [PR #12](https://github.com/zemeng2015/proof-cart/pull/12),
   with independent review and passing Linux CI. See the [verification record](acceptance-pc04.md).
-- PC-05: fixture search/detail/compare and bounded form transport implemented on
-  `codex/pc05-catalog-ui`. Independent static review and local integration checks
-  pass: 220 unit tests, 97.46% aggregate branches, five runtime cases and 13 browser
-  cases. Remote checks must pass before merge. See [verification](acceptance-pc05.md).
-- PC-06 through PC-08 and M2/M3: not implemented; no release is claimed.
+- PC-05: accepted and merged through [PR #13](https://github.com/zemeng2015/proof-cart/pull/13),
+  with independent review and passing Linux CI. See [verification](acceptance-pc05.md).
+- PC-06: strict intent, bounded read-only tools, deterministic alternatives and
+  fixed evaluations implemented on `codex/pc06-planner`. Independent review and
+  local checks pass: 306 tests, 97.09% aggregate branches, 26 intent and 18
+  adversarial evaluations. See [verification](acceptance-pc06.md). Remote checks
+  must pass before merge; planner UI integration remains PC-07.
+- PC-07, PC-08 and M2/M3: not implemented; no release is claimed.
 - Repository: https://github.com/zemeng2015/proof-cart (public; verified).
 - Default/integration branch: `main`; later feature branches use `codex/`.
 
@@ -64,10 +67,10 @@ fresh public-clone demo, and passing Linux CI. No live-store or release acceptan
 
 ## Next bounded work
 
-[PC-06](https://github.com/zemeng2015/proof-cart/issues/6): after PC-05 remote
-checks and merge, implement validated intent and deterministic read-only planning
-with sourced reasons and a bounded tool budget. Live Storefront verification
-remains unresolved.
+[PC-07](https://github.com/zemeng2015/proof-cart/issues/7): after PC-06 remote
+checks and merge, connect structured shopping intent, recommendations and proposal
+review to the UI, with an accessible evidence drawer and exact provenance mapping.
+Live Storefront verification remains unresolved.
 
 Historical PC-02 checks were retained under `.local/proposal-*.log`:
 124 tests across nine files, typecheck, lint, and coverage pass. Pinned additions

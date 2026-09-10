@@ -14,13 +14,15 @@ It is not affiliated with or endorsed by Shopify.
 variant facts and their evidence, and compare up to three products. The application
 uses SSR, loaders, and a read-only comparison form action. Fixture and typed
 Storefront adapters exist; live mode is not connected to the routes yet.
-Recommendations, cart actions, and checkout handoff remain unimplemented.
+A deterministic planner with sourced reasons and validated proposals exists as a
+domain service; recommendation UI, cart actions, and checkout handoff remain
+unimplemented. See the [planner contract](docs/planner.md).
 No live-store or release claim is made.
 
 Follow the [roadmap](docs/roadmap.md), [execution state](docs/execution/state.md),
 and [GitHub issues](https://github.com/zemeng2015/proof-cart/issues).
 Accepted foundation: [PC-01 verification](docs/execution/acceptance-pc01.md).
-Current slice: [PC-05 — search, detail, and comparison](https://github.com/zemeng2015/proof-cart/issues/5).
+Current slice: [PC-06 — deterministic read-only planning](https://github.com/zemeng2015/proof-cart/issues/6).
 
 ## Three principles
 

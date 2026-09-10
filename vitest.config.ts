@@ -10,7 +10,7 @@ export default defineConfig({
     clearMocks: true,
     coverage: {
       provider: 'v8',
-      include: ['app/features/catalog/**/*.ts', 'app/features/cart/**/*.ts'],
+      include: ['app/features/catalog/**/*.ts', 'app/features/cart/**/*.ts', 'app/features/planner/**/*.ts'],
       exclude: ['app/features/catalog/domain.ts', '**/*.generated.d.ts'],
       reporter: ['text', 'json', 'json-summary', 'lcov'],
       reportsDirectory: 'coverage',
