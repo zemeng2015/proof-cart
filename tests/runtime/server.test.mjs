@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import {Buffer} from 'node:buffer';
 import {execFile, spawn} from 'node:child_process';
+import {createHash} from 'node:crypto';
 import {mkdir, writeFile} from 'node:fs/promises';
 import http from 'node:http';
-import {createServer} from 'node:net';
+import {connect, createServer} from 'node:net';
 import {setTimeout as delay} from 'node:timers/promises';
 import {test} from 'node:test';
 import {promisify, stripVTControlCharacters} from 'node:util';
@@ -61,6 +62,35 @@ async function checkRejectedStreams(base, signal) {
     const head = await sendHttp(base, agent, signal, 'HEAD');
     assert.equal(head.status, 404);
     assert.equal(head.text, '');
+  } finally {agent.destroy();}
+}
+
+async function checkComparisonAction(base, signal) {
+  const body = Buffer.from('productId=fixture%3Aproduct%3Aceramic-cup&productId=fixture%3Aproduct%3Acanvas-bag&remove=fixture%3Aproduct%3Aceramic-cup');
+  const agent = new http.Agent({keepAlive: true});
+  const submit = (framing, overrides = {}) => new Promise((resolve, reject) => {
+    const headers = {
+      origin: base, 'content-type': 'application/x-www-form-urlencoded',
+      ...(framing === 'chunked' ? {'transfer-encoding': 'chunked'} : {'content-length': body.length}), ...overrides,
+    };
+    const request = http.request(`${base}/compare`, {method: 'POST', headers, agent, signal}, response => {
+      let text = '';
+      response.setEncoding('utf8'); response.on('data', chunk => {text += chunk;});
+      response.once('error', reject);
+      response.once('end', () => resolve({status: response.statusCode, location: response.headers.location, text}));
+    });
+    request.once('error', reject);
+    request.setTimeout(5_000, () => request.destroy(new Error('Comparison request timed out.')));
+    request.write(body.subarray(0, 33)); request.end(body.subarray(33));
+  });
+  try {
+    for (const framing of ['length', 'chunked']) {
+      const result = await submit(framing);
+      assert.equal(result.status, 302);
+      assert.equal(result.location, '/compare?productId=fixture%3Aproduct%3Acanvas-bag');
+      assert.equal((await submit(framing, {origin: 'https://untrusted.example'})).status, 403);
+      assert.equal((await submit(framing, {'content-type': 'text/plain'})).status, 415);
+    }
   } finally {agent.destroy();}
 }
 
@@ -153,9 +183,107 @@ for (const [name, command, port] of [['production preview', ['preview'], 4187], 
       assert.equal(missing.status, 404);
       await missing.text();
       await checkRejectedStreams(base, context.signal);
+      await checkComparisonAction(base, context.signal);
     });
     assert.ok(!output.includes('URL_QUERY_SECRET_MARKER'));
     assert.ok(!output.includes('RUNTIME_ENV_SECRET_MARKER'));
     assert.ok(!output.includes('REJECTED_BODY_SECRET_MARKER'));
+  });
+}
+
+function sendBody(base, agent, signal, body, framing, method = 'POST') {
+  return new Promise((resolve, reject) => {
+    const request = http.request(base, {
+      method, agent, signal,
+      headers: framing === 'length' ? {'content-length': body.length} : {'transfer-encoding': 'chunked'},
+    }, response => {
+      const chunks = [];
+      response.on('data', chunk => chunks.push(chunk));
+      response.once('error', reject);
+      response.once('end', () => resolve({status: response.statusCode, text: Buffer.concat(chunks).toString()}));
+    });
+    request.once('error', reject);
+    request.setTimeout(10_000, () => request.destroy(new Error('Body test timed out.')));
+    // Intentionally split inside UTF-8 sequences and use more than two writes.
+    request.write(body.subarray(0, 1));
+    request.write(body.subarray(1, 7));
+    request.write(body.subarray(7, 23));
+    request.end(body.subarray(23));
+  });
+}
+
+async function incompleteUpload(base, signal, kind) {
+  const {hostname, port} = new URL(base);
+  return new Promise((resolve, reject) => {
+    const socket = connect({host: hostname, port: Number(port), signal});
+    let output = '';
+    socket.setEncoding('utf8');
+    socket.setTimeout(10_000, () => socket.destroy(new Error('Upload test timed out.')));
+    socket.once('error', error => {
+      if (kind === 'abort' && error.code === 'ECONNRESET') resolve(output);
+      else reject(error);
+    });
+    socket.on('data', chunk => {output += chunk;});
+    socket.once('close', () => resolve(output));
+    socket.once('connect', () => {
+      socket.write(`POST / HTTP/1.1\r\nHost: ${hostname}:${port}\r\nContent-Length: 100\r\n\r\nUPLOAD_BODY_SECRET_MARKER`);
+      if (kind === 'abort') socket.destroy();
+      if (kind === 'truncated') socket.end();
+    });
+  });
+}
+
+for (const [name, command, port] of [['preview', ['preview'], 4189], ['development', [], 4191]]) {
+  test(`${name} forwards bounded complete bodies through the actual Oxygen worker`, {timeout: 90_000}, async context => {
+    const config = ['--config', 'tests/runtime/body-vite.config.ts'];
+    const output = await withServer([...command, ...config], port, 'fixture', context.signal, async (base, request) => {
+      const agent = new http.Agent({keepAlive: true, maxSockets: 4});
+      let expected = 0;
+      const verifyBody = async (body, framing, method = 'POST') => {
+        const response = await sendBody(base, agent, context.signal, body, framing, method);
+        assert.equal(response.status, 200);
+        const result = JSON.parse(response.text);
+        expected++;
+        assert.deepEqual(result, {received: expected, size: body.length, sha256: createHash('sha256').update(body).digest('hex'), method});
+      };
+      try {
+        const unicode = Buffer.from('购物🛒 café / BODY_CONTENT_SECRET_MARKER '.repeat(40));
+        for (let round = 0; round < 3; round++) {
+          for (const framing of ['length', 'chunked']) await verifyBody(unicode, framing);
+        }
+        const concurrentBodies = Array.from({length: 6}, (_, index) => Buffer.from(`${index}:购物🛒 concurrent `.repeat(index + 1)));
+        const concurrent = await Promise.all(concurrentBodies.map(async (body, index) => {
+          const method = index % 2 === 0 ? 'POST' : 'PATCH';
+          const response = await sendBody(base, agent, context.signal, body, index % 2 === 0 ? 'length' : 'chunked', method);
+          assert.equal(response.status, 200);
+          const result = JSON.parse(response.text);
+          assert.equal(result.size, body.length);
+          assert.equal(result.sha256, createHash('sha256').update(body).digest('hex'));
+          assert.equal(result.method, method);
+          return result.received;
+        }));
+        assert.deepEqual(concurrent.sort((left, right) => left - right), concurrentBodies.map((_, index) => expected + index + 1));
+        expected += concurrentBodies.length;
+        for (const framing of ['length', 'chunked']) {
+          await verifyBody(Buffer.alloc(65_536, 0x61), framing, 'PUT');
+          await verifyBody(Buffer.alloc(0), framing);
+          const tooLarge = await sendBody(base, agent, context.signal, Buffer.alloc(65_537, 0x62), framing);
+          assert.deepEqual(tooLarge, {status: 413, text: 'Request body rejected.'});
+          for (const method of ['GET', 'HEAD']) {
+            const rejected = await sendBody(base, agent, context.signal, unicode, framing, method);
+            assert.deepEqual(rejected, {status: 400, text: method === 'HEAD' ? '' : 'Request body rejected.'});
+          }
+        }
+        await incompleteUpload(base, context.signal, 'abort');
+        await incompleteUpload(base, context.signal, 'truncated');
+        const timeout = await incompleteUpload(base, context.signal, 'timeout');
+        assert.match(timeout, /HTTP\/1\.1 408/);
+        assert.ok(!timeout.includes('UPLOAD_BODY_SECRET_MARKER'));
+        const count = await (await request(base)).json();
+        assert.equal(count.received, expected, 'Rejected, aborted and incomplete bodies never reach the worker');
+        await verifyBody(unicode, 'chunked');
+      } finally {agent.destroy();}
+    });
+    for (const marker of ['BODY_CONTENT_SECRET_MARKER', 'UPLOAD_BODY_SECRET_MARKER', 'RUNTIME_ENV_SECRET_MARKER']) assert.ok(!output.includes(marker));
   });
 }

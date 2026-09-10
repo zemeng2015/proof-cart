@@ -2,11 +2,18 @@ import * as build from 'virtual:react-router/server-build';
 import {createRequestHandler} from 'react-router';
 import {ConfigurationError, createLoadContext, type RuntimeEnvironment} from './app/lib/config.server';
 import {rejectUnsupportedMethod} from './app/lib/request-policy.server';
+import {isComparisonForm, prepareComparisonForm} from './app/lib/form-request.server';
 
 export default {
   async fetch(request: Request, env: RuntimeEnvironment): Promise<Response> {
-    const rejected = rejectUnsupportedMethod(request);
-    if (rejected) return rejected;
+    if (isComparisonForm(request)) {
+      const prepared = await prepareComparisonForm(request);
+      if (prepared instanceof Response) return prepared;
+      request = prepared;
+    } else {
+      const rejected = rejectUnsupportedMethod(request);
+      if (rejected) return rejected;
+    }
 
     try {
       const context = createLoadContext(env);

@@ -10,15 +10,17 @@ It is not affiliated with or endorsed by Shopify.
 
 ## Status
 
-**M1 in progress: runnable foundation preview.** The credential-free application
-serves an SSR home page with client hydration, safe route errors, and a responsive
-keyboard-accessible shell. Search, catalog evidence, recommendations, cart actions,
-and checkout handoff are not implemented yet. No live-store or release claim is made.
+**M1 in progress: fixture catalog preview.** Search synthetic products, inspect
+variant facts and their evidence, and compare up to three products. The application
+uses SSR, loaders, and a read-only comparison form action. Fixture and typed
+Storefront adapters exist; live mode is not connected to the routes yet.
+Recommendations, cart actions, and checkout handoff remain unimplemented.
+No live-store or release claim is made.
 
 Follow the [roadmap](docs/roadmap.md), [execution state](docs/execution/state.md),
 and [GitHub issues](https://github.com/zemeng2015/proof-cart/issues).
 Accepted foundation: [PC-01 verification](docs/execution/acceptance-pc01.md).
-Next: [PC-02 — catalog, money, and evidence contracts](https://github.com/zemeng2015/proof-cart/issues/2).
+Current slice: [PC-05 — search, detail, and comparison](https://github.com/zemeng2015/proof-cart/issues/5).
 
 ## Three principles
 

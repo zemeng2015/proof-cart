@@ -1,5 +1,5 @@
-import type {ReactNode} from 'react';
-import {Link, Links, Meta, Outlet, Scripts, ScrollRestoration} from 'react-router';
+import {useEffect, useRef, type ReactNode} from 'react';
+import {Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useLocation} from 'react-router';
 import {useNonce} from '@shopify/hydrogen';
 import type {Route} from './+types/root';
 import {RouteError} from './components/route-error';
@@ -31,7 +31,7 @@ export function Layout({children}: {children: ReactNode}) {
         <div className="site-shell">
           <header className="site-header">
             <Link className="brand" to="/" aria-label="Proof Cart home"><span className="brand-mark" aria-hidden="true">p.</span>Proof Cart</Link>
-            <span className="preview-badge"><span aria-hidden="true">●</span> Fixture preview</span>
+            <nav aria-label="Main navigation"><Link to="/catalog">Search</Link></nav><span className="preview-badge"><span aria-hidden="true">●</span> Fixture preview</span>
           </header>
           <main id="main-content" tabIndex={-1}>{children}</main>
           <footer className="site-footer"><p>Agent recommends. Buyer decides. Shopify completes checkout.</p><p>Independent reference project · Not affiliated with Shopify</p></footer>
@@ -44,6 +44,15 @@ export function Layout({children}: {children: ReactNode}) {
 }
 
 export default function App() {
+  const {pathname} = useLocation();
+  const previous = useRef(pathname);
+  useEffect(() => {
+    if (previous.current !== pathname) {
+      const heading = document.querySelector<HTMLElement>('#main-content h1');
+      if (heading) {heading.tabIndex = -1; heading.focus();}
+      previous.current = pathname;
+    }
+  }, [pathname]);
   return <Outlet />;
 }
 

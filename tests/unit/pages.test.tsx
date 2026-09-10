@@ -8,7 +8,7 @@ describe('foundation page', () => {
   it('renders an honest accessible preview without shopping actions', () => {
     render(<Home />);
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent('Good choices.Grounded in proof.');
-    expect(screen.getByRole('link', {name: /Explore the preview/})).toHaveAttribute('href', '#preview-status');
+    expect(screen.getByRole('link', {name: /Explore the catalog/})).toHaveAttribute('href', '/catalog');
     expect(screen.getByText(/Cart actions and checkout handoff are not available/)).toBeVisible();
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
     expect(screen.queryByRole('textbox')).not.toBeInTheDocument();

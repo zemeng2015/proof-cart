@@ -42,9 +42,12 @@ forwarding proxy exists in fixture mode. Preserve the explicit public loader
 allowlist and environment boundary. Reevaluate the documented dependency overrides
 with actual worker tests whenever the framework graph changes.
 
-The local fixture transport deliberately discards chunked bodies for methods the
-worker unconditionally rejects. Before adding any action or accepting any request
-body, remove that workaround and verify complete, bounded body forwarding in both
-dev and preview. Reliable 405 rejection does not prove request-body transport.
+The local fixture transport buffers and forwards complete bodies with a 64 KiB
+limit and a five-second deadline, and closes body-bearing connections. Preserve
+the actual Oxygen dev/preview byte-integrity, concurrency, and failure tests when
+changing it. The deployed worker independently bounds comparison forms and checks
+their origin and content type. Only POST /compare and /compare.data are accepted;
+this read-only action is not cart authorization. Never infer body forwarding from
+405 rejection tests alone.
 
 Creating this public repository and its initial issues is authorized. Do not publish private data. Deployment and live-store work need the applicable environment and authorization; never infer permission to make purchases or contact third parties.
