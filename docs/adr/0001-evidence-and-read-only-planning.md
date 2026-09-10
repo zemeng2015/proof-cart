@@ -1,6 +1,7 @@
 # ADR 0001: Evidence-backed facts and read-only planning
 
-- Status: accepted design direction; implementation and verification pending.
+- Status: accepted; catalog/evidence/planner services implemented and tested.
+  Recommendation UI and complete release verification remain pending.
 - Scope: M1 and later changes to catalog, evidence, and planner behavior.
 - Invariants: INV-01, INV-02, INV-03.
 
@@ -50,7 +51,8 @@ fixed intent evaluations, and prompt-injection/tool-abuse cases must verify this
 decision. The release requires 100% displayed-fact evidence coverage, zero critical
 price/inventory hallucinations, at least 20 intent evaluations, and at least 12
 adversarial cases with all recorded attacks blocked. Raw output must be preserved.
-No such application checks exist at bootstrap.
+Current synthetic checks are recorded in [PC-06 verification](../execution/acceptance-pc06.md);
+they do not establish live-store or complete shopping-flow behavior.
 
 Related: [charter](../charter.md), [architecture](../architecture.md), and
 [threat model](../threat-model.md).

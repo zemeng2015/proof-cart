@@ -19,6 +19,7 @@
     "lint": "eslint . --max-warnings 0",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:eval": "vitest run tests/unit/planner-evals.test.ts",
     "test:e2e": "playwright test",
     "test:runtime": "node --test tests/runtime/server.test.mjs",
     "codegen": "graphql-codegen --config codegen.ts",

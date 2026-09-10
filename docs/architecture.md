@@ -1,8 +1,8 @@
 # Planned architecture
 
 Status: fixture catalog routes, typed read adapters, evidence snapshots, and
-data-only proposals are implemented. Planning and confirmation execution remain
-planned. The [charter](charter.md) defines
+data-only proposals are implemented. Deterministic planning is a tested domain
+service; recommendation UI and confirmation execution remain planned. The [charter](charter.md) defines
 product scope and stable invariants.
 
 ## Implemented foundation
